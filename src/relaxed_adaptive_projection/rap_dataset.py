@@ -7,23 +7,18 @@ import json
 import itertools
 from functools import reduce
 
-if __name__ == "__main__":
-    from datasets import Dataset
-else:
-    from datasets.dataset import Dataset
-
-
-class Adult(Dataset):
-    def __init__(self, read_file, filepath, full_dataset, n, d):
-        super().__init__(read_file, filepath, full_dataset, n, d)
+class RAPDataset:
+    def __init__(self, name):
+        self.name = name 
 
     def get_dataset(self):
 
-        data_location = "data/"
+        data_location = os.environ['HD_DATA']
 
         # parse dataframe and feature domains
-        self.df = pd.read_csv(os.path.join(data_location, "adult.csv"))
-        self.domain = json.load(open(os.path.join(data_location, "adult-domain.json")))
+        self.df = pd.read_csv(data_location + self.name + '.csv')
+        self.domain = json.load(open(data_location + self.name + "-domain.json"))
+        self.df = self.df[[col for col in self.df.columns if col in self.domain]]
 
         # check domain and csv header are consistent
         assert set(self.df.columns) == set(self.domain.keys())
@@ -31,11 +26,8 @@ class Adult(Dataset):
         # return one-hot encoding of entrire dataset
         dataset = self.project_feats()
 
-        if not self.use_subset:
-            self.n, self.d = dataset.shape
-            return dataset
-        else:
-            return dataset[: self.n, : self.d]
+        self.n, self.d = dataset.shape
+        return dataset
 
     def gen_synthetic(self, N):
         """
@@ -146,23 +138,3 @@ class Adult(Dataset):
         )
 
         return bin_dataset
-
-
-if __name__ == "__main__":
-    adult = Adult(False, "data/", False, 1, 5)
-
-    X = adult.get_dataset()
-
-    # generate random k-way attributes tuples at random
-    kway_marginals = adult.randomKway(num_kways=128, k=3)
-    print(X.shape, len(kway_marginals), kway_marginals[0])
-
-    # generate random N 3-way queries of indexes from kway_marginals
-    kway_queries, num_queries = adult.get_queries(kway_marginals)
-    print(
-        sum([reduce(lambda x, y: x * y, [len(i) for i in q], 1) for q in kway_queries]),
-        num_queries,
-    )
-
-    kway_queries, num_queries = adult.get_queries(kway_marginals, N=-1)
-    print(len(kway_queries), num_queries)

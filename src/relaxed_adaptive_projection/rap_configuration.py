@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Callable, Any
 from jax import numpy as np
-from .constants import Norm, ProjectionInterval
+from relaxed_adaptive_projection.constants import Norm, ProjectionInterval
 
 
 @dataclass

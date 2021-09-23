@@ -5,15 +5,7 @@ from jax import random, jit, nn, vmap, partial
 import numpy as onp
 from scipy.stats import norm
 import math
-import datasets
 from jax.ops import index_update
-
-data_sources = {
-    "toy_binary": datasets.toy_binary.ToyBinary,
-    "adult": datasets.adult.Adult,
-    "loans": datasets.loans.Loans,
-}
-
 
 def init_D_prime(selection, n_prime, d, D=False, interval=None):
     """

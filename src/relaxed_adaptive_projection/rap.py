@@ -8,10 +8,10 @@ import numpy as np_orig
 from jax import numpy as np, random, jit, value_and_grad
 from jax.experimental import optimizers
 
-from privacy_budget_tracking import zCDPTracker
-from utils_data import sparsemax_project, randomized_rounding
-from .constants import SyntheticInitializationOptions, norm_mapping, Norm
-from .rap_configuration import RAPConfiguration
+from relaxed_adaptive_projection.zcdp_tracker import zCDPTracker
+from relaxed_adaptive_projection.utils_data import sparsemax_project, randomized_rounding
+from relaxed_adaptive_projection.constants import SyntheticInitializationOptions, norm_mapping, Norm
+from relaxed_adaptive_projection.rap_configuration import RAPConfiguration
 
 
 class RAP:

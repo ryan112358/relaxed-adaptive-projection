@@ -5,7 +5,7 @@ import math
 import numpy as onp
 from jax import random, vmap, jit, numpy as np
 
-from .privacy_budget_exhausted_error import PrivacyBudgetExhaustedError
+from relaxed_adaptive_projection.privacy_budget_exhausted_error import PrivacyBudgetExhaustedError
 
 
 class zCDPTracker:

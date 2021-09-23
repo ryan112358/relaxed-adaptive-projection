@@ -9,7 +9,9 @@ from jax import numpy as np, random
 
 from relaxed_adaptive_projection import RAPConfiguration, RAP
 from relaxed_adaptive_projection.constants import Norm, ProjectionInterval
-from utils_data import data_sources, ohe_to_categorical
+from relaxed_adaptive_projection.utils_data import ohe_to_categorical
+from relaxed_adaptive_projection.rap_dataset import RAPDataset
+from relaxed_adaptive_projection import statistickway as stat_module
 
 parser = configargparse.ArgumentParser()
 parser.add_argument(
@@ -86,8 +88,7 @@ parser.add_argument(
 parser.add_argument(
     "--data-source",
     type=str,
-    choices=data_sources.keys(),
-    default="toy_binary",
+    default="adult",
     dest="data_source",
     help="Data source used to train data generator",
 )
@@ -238,9 +239,8 @@ if args.save_fig:
 
 key = random.PRNGKey(args.seed)
 
-dataset = data_sources[args.data_source](
-    args.read_file, args.filepath, args.use_subset, args.n, args.d
-)
+dataset = RAPDataset(args.data_source)
+
 D = np.asarray(dataset.get_dataset())
 
 # update dataset shape
@@ -250,7 +250,7 @@ args.n, args.d = D.shape
 if args.delta is None:
     args.delta = 1 / args.n ** 2
 
-stat_module = __import__(args.statistic_module)
+#stat_module = __import__(args.statistic_module)
 
 # First select random k-way marginals from the dataset
 kway_attrs = dataset.randomKway(num_kways=args.workload, k=args.k)
