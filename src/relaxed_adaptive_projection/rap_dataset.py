@@ -8,20 +8,11 @@ import itertools
 from functools import reduce
 
 class RAPDataset:
-    def __init__(self, name):
-        self.name = name 
+    def __init__(self, df, domain):
+        self.df = df
+        self.domain = domain
 
     def get_dataset(self):
-
-        data_location = os.environ['HD_DATA']
-
-        # parse dataframe and feature domains
-        self.df = pd.read_csv(data_location + self.name + '.csv')
-        self.domain = json.load(open(data_location + self.name + "-domain.json"))
-        self.df = self.df[[col for col in self.df.columns if col in self.domain]]
-
-        # check domain and csv header are consistent
-        assert set(self.df.columns) == set(self.domain.keys())
 
         # return one-hot encoding of entrire dataset
         dataset = self.project_feats()

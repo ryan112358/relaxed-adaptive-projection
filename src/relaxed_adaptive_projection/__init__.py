@@ -1,3 +1,4 @@
 from relaxed_adaptive_projection.rap import RAP
-from relaxed_adaptive_projection.rap_configuration import RAPConfiguration
 from relaxed_adaptive_projection.constants import Norm
+from relaxed_adaptive_projection.rap_dataset import RAPDataset
+from relaxed_adaptive_projection.rap_configuration import RAPConfiguration

@@ -6,6 +6,7 @@ import os
 import configargparse
 import pandas as pd
 from jax import numpy as np, random
+import json
 
 from relaxed_adaptive_projection import RAPConfiguration, RAP
 from relaxed_adaptive_projection.constants import Norm, ProjectionInterval
@@ -239,7 +240,10 @@ if args.save_fig:
 
 key = random.PRNGKey(args.seed)
 
-dataset = RAPDataset(args.data_source)
+df = pd.read_csv('data/%s.csv' % args.data_source)
+domain = json.load(open('data/%s-domain.json' % args.data_source))
+
+dataset = RAPDataset(df, domain)
 
 D = np.asarray(dataset.get_dataset())
 
